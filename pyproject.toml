@@ -5,6 +5,19 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "formula-one-model"
 version = "0.1.0"
+description = "Formula 1 prediction model API"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.133,<1.0",
+    "uvicorn>=0.41,<1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.0,<10.0",
+    "towncrier>=24.8.0",
+]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
@@ -15,3 +28,27 @@ where = ["src"]
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
+
+[tool.towncrier]
+package = "f1model"
+package_dir = "src"
+filename = "CHANGELOG.md"
+directory = "changelog.d"
+start_string = "<!-- towncrier release notes start -->\n"
+title_format = "## [{version}] - {project_date}"
+underlines = ["", "", ""]
+
+[[tool.towncrier.type]]
+directory = "added"
+name = "Added"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "changed"
+name = "Changed"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "fixed"
+name = "Fixed"
+showcontent = true
