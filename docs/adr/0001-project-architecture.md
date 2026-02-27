@@ -20,6 +20,16 @@ We adopt the following baseline architecture:
 5. The project is installed in editable mode during development (`pip install -e ".[dev]"`).
 6. Changelog management is handled with Towncrier using fragment files in `changelog.d/`.
 
+## Rationale
+
+The `src/` layout and package-qualified imports reduce path ambiguity between runtime and tests.
+
+Centralizing dependency and tool configuration in `pyproject.toml` aligns with modern Python standards and simplifies onboarding.
+
+Using editable installs for development avoids repeated reinstall cycles and ensures local changes are immediately testable.
+
+Maintaining release notes with Towncrier avoids manual changelog drift while preserving readable release history.
+
 ## Consequences
 
 ### Positive
@@ -34,6 +44,12 @@ We adopt the following baseline architecture:
 
 - Slightly more setup overhead for contributors unfamiliar with `pyproject.toml` and editable installs.
 - Release workflow now includes Towncrier fragment discipline.
+
+### Mitigation
+
+- Keep onboarding commands documented in `README.md`.
+- Enforce one changelog fragment per significant change in pull requests.
+- Use a consistent commit style to keep release note generation clean.
 
 ## Notes
 
