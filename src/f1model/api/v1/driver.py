@@ -6,7 +6,7 @@ from f1model.services.driver_service import DriverService
 
 driver_router = APIRouter(prefix="/drivers", tags=["drivers"])
 
-@driver_router.post("/", response_model=DriverRead)
+@driver_router.post("/", response_model=DriverRead, status_code=201)
 def create_driver(
     data: DriverCreate,
     session: Session = Depends(get_db)

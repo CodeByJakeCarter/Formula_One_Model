@@ -2,6 +2,8 @@ from sqlalchemy.orm import Session
 from f1model.repositories.driver_repository import DriverRepository
 from f1model.models.driver import Driver
 from f1model.schemas.driver import DriverCreate
+from fastapi import HTTPException
+from sqlalchemy.exc import IntegrityError
 
 class DriverService:
     def __init__(self, session: Session):
@@ -10,13 +12,15 @@ class DriverService:
     
     def create_driver(self, data: DriverCreate) -> Driver:
         driver = Driver(**data.model_dump())
+        self.repo.create(driver)
+
         try:
-            self.repo.create(driver)
             self.session.commit()
-            return driver
-        except Exception:
+        except IntegrityError:
             self.session.rollback()
-            raise
+            raise HTTPException(status_code=409, detail="driver_ref already exists")
+
+        return driver
     
     def get_driver(self, driver_id: int) -> Driver | None:
         return self.repo.get_by_id(driver_id)
