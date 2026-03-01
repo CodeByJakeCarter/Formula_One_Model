@@ -16,6 +16,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+    "alembic>=1.17,<2.0",
     "pytest>=9.0,<10.0",
     "towncrier>=24.8.0",
 ]
