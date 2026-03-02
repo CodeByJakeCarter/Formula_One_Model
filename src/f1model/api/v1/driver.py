@@ -25,3 +25,13 @@ def get_driver(
     if driver is None:
         raise HTTPException(status_code=404, detail="Driver not found")
     return driver
+
+@driver_router.get("/", response_model=list[DriverRead])
+def list_drivers(
+    limit: int = 100,
+    offset: int = 0,
+    session: Session = Depends(get_db)
+):
+    service = DriverService(session)
+    driver = service.list_drivers(limit=limit, offset=offset)
+    return driver
