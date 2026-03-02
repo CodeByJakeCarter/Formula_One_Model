@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from f1model.db.deps import get_db
 from f1model.schemas.driver import DriverCreate, DriverRead
@@ -13,4 +13,15 @@ def create_driver(
 ):
     service = DriverService(session)
     driver = service.create_driver(data)
+    return driver
+
+@driver_router.get("/{driver_id}", response_model=DriverRead)
+def get_driver(
+    driver_id: int,
+    session: Session = Depends(get_db)
+):
+    service = DriverService(session)
+    driver = service.get_driver(driver_id)
+    if driver is None:
+        raise HTTPException(status_code=404, detail="Driver not found")
     return driver
