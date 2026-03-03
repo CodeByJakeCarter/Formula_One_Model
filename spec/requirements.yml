@@ -1,0 +1,154 @@
+meta:
+  project: F1 Oracle
+  spec:
+    file: spec/F1_Oracle_Development_Spec_v2.pdf
+    title: F1 Oracle – Development Spec (Stats-First, Portfolio Grade)
+    version: v2
+  generated_at_utc: '2026-03-03T10:59:44Z'
+  notes: This ledger is the machine-readable task engine derived from the v2 spec. Update statuses and proofs as REQs are implemented.
+open_questions:
+- id: Q-001
+  question: What is the official data source?
+  status: open
+  notes: ''
+- id: Q-002
+  question: Exact output granularity?
+  status: open
+  notes: ''
+- id: Q-003
+  question: Required simulation count for stability?
+  status: open
+  notes: ''
+- id: Q-004
+  question: Constructors derived or modeled independently?
+  status: open
+  notes: ''
+requirements:
+- id: REQ-001
+  title: Historical Data Ingestion
+  rigidity: HARD
+  depends_on:
+  - Q-001
+  status: blocked
+  statement: System ingests structured historical F1 race data.
+  acceptance:
+  - At least one full season can be loaded and queried.
+  - Core entities (Driver, Constructor, Race, Season, Result) are persisted.
+  - Deterministic reload produces identical dataset state (given the same source + seed/config).
+  verification:
+  - type: command
+    run: ./.venv/bin/python -m pytest -q
+    description: Run canonical verification test suite.
+  tests: []
+  artifacts:
+    db_migrations: true
+    api_surface: false
+    docs_update: true
+    adr_required: true
+  notes: Blocked pending Q-001 decision on official data source (see DEC-2026-03-03-001).
+- id: REQ-002
+  title: Race-Level Probabilistic Prediction
+  rigidity:
+    schema: HARD
+    methodology: SOFT
+  depends_on: []
+  status: todo
+  statement: System generates probabilistic race outcome predictions.
+  api_contract:
+    endpoint_hint: /api/v1/ (see REQ-005)
+    response_shape:
+      race_id: int
+      driver_predictions:
+      - driver_id: int
+        win_probability: float
+        podium_probability: float
+        expected_points: float
+  acceptance:
+  - API returns probability distributions for a given race.
+  - Sum of win_probability across drivers equals 1 ± tolerance.
+  - All probability values are within [0,1].
+  - Deterministic results given fixed seed/config.
+  verification:
+  - type: command
+    run: ./.venv/bin/python -m pytest -q
+    description: Run canonical verification test suite.
+  tests: []
+  artifacts:
+    db_migrations: false
+    api_surface: true
+    docs_update: true
+    adr_required: true
+  notes: Probability semantics beyond schema (e.g., calibration) remain SOFT unless promoted to HARD via an ADR.
+- id: REQ-003
+  title: Championship Simulation
+  rigidity:
+    reproducibility: HARD
+    simulation_count: SOFT
+  depends_on:
+  - Q-003
+  - Q-004
+  status: todo
+  statement: System simulates season outcomes to compute title probabilities.
+  api_contract:
+    response_shape:
+      drivers_championship:
+      - driver_id: int
+        title_probability: float
+      constructors_championship:
+      - constructor_id: int
+        title_probability: float
+  acceptance:
+  - Monte Carlo simulation produces reproducible estimates with a fixed seed/config.
+  - Probability outputs are stable within a defined tolerance band (tolerance definition recorded when decided).
+  verification:
+  - type: command
+    run: ./.venv/bin/python -m pytest -q
+    description: Run canonical verification test suite.
+  tests: []
+  artifacts:
+    db_migrations: false
+    api_surface: true
+    docs_update: true
+    adr_required: true
+  notes: Define 'stability' via Decision Gate tied to Q-003 (e.g., convergence threshold or min sims).
+- id: REQ-004
+  title: Backtesting Capability
+  rigidity: HARD
+  depends_on: []
+  status: todo
+  statement: Chronological backtesting without data leakage.
+  acceptance:
+  - Training data limited to seasons ≤ N when predicting N+1.
+  - No access to future race results in backtesting mode.
+  - Backtesting mode has explicit tests preventing leakage regressions.
+  verification:
+  - type: command
+    run: ./.venv/bin/python -m pytest -q
+    description: Run canonical verification test suite.
+  tests: []
+  artifacts:
+    db_migrations: false
+    api_surface: false
+    docs_update: true
+    adr_required: true
+  notes: Backtesting protocol should be recorded as an ADR once defined (train/predict split rules).
+- id: REQ-005
+  title: Versioned Prediction API
+  rigidity: HARD
+  depends_on: []
+  status: todo
+  statement: Predictions exposed via /api/v1/ endpoints.
+  acceptance:
+  - Versioned routing structure implemented (e.g., /api/v1/*).
+  - Response schemas validated via tests.
+  verification:
+  - type: command
+    run: ./.venv/bin/python -m pytest -q
+    description: Run canonical verification test suite.
+  tests: []
+  artifacts:
+    db_migrations: false
+    api_surface: true
+    docs_update: true
+    adr_required: true
+  notes: ''
