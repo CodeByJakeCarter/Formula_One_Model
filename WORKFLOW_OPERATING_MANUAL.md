@@ -1,4 +1,5 @@
 # WORKFLOW_OPERATING_MANUAL.md
+
 # F1 Oracle – AI Workflow Operating Manual (Private)
 
 This file is for the repository owner only.
@@ -14,11 +15,12 @@ The system relies on:
 - TASKS/010-current.md
 - spec/decisions.md
 - AI_RULES.md
-- AI_ROLES/*
+- AI_ROLES/\*
 
 Never bypass these files when running the workflow.
 
 Verification policy:
+
 - Assistants must run tests using `./.venv/bin/python -m pytest -q`.
 - Assistants must return raw stdout/stderr (no summarizing).
 
@@ -29,6 +31,7 @@ Verification policy:
 ## 1. Conductor Mode (Task Engine Control)
 
 Use when:
+
 - Starting a session
 - Checking task status
 - Advancing tasks
@@ -41,12 +44,14 @@ Evaluate the current task state and proceed according to the task engine rules.
 Do not implement any code."
 
 If blocked:
+
 - It will generate a Decision Gate.
 - You choose an option.
 - It records the decision.
 - Task becomes unblocked.
 
 If done:
+
 - It runs verification.
 - Marks REQ done.
 - Advances to next REQ.
@@ -56,6 +61,7 @@ If done:
 ## 2. Tutor Mode (Diagnosis Only)
 
 Use when:
+
 - Tests fail
 - You’re confused
 - Something behaves unexpectedly
@@ -68,6 +74,7 @@ Diagnose only.
 Do not implement code."
 
 Expected response:
+
 1. Restate goal (active REQ)
 2. Describe failure
 3. Classify root cause
@@ -82,6 +89,7 @@ Tutor must not write implementation code unless explicitly requested.
 ## 3. Secretary Mode (Bookkeeping + Git)
 
 Use when:
+
 - A REQ is completed
 - Decision is finalized
 - You want commit prepared
@@ -94,6 +102,7 @@ Update bookkeeping and prepare commit according to AI_RULES.md.
 Do not modify src/ or tests/."
 
 Secretary may:
+
 - Update spec/requirements.yml status
 - Update spec/decisions.md
 - Update changelog
@@ -105,17 +114,18 @@ Secretary must not change implementation code.
 
 # Session Flow
 
-1) Conductor: What’s next?
-2) Implement manually.
-3) Tutor if stuck.
-4) Conductor to verify.
-5) Secretary to commit.
+1. Conductor: What’s next?
+2. Implement manually.
+3. Tutor if stuck.
+4. Conductor to verify.
+5. Secretary to commit.
 
 ---
 
 # Hard Boundary Reminder
 
 Any change affecting:
+
 - Folder structure
 - Schema
 - API contract
