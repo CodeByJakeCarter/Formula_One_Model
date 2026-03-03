@@ -33,8 +33,8 @@ You may NOT:
 1. Determine the active REQ from TASKS/010-current.md.
 2. Compare it to spec/requirements.yml:
    - If status is `done`, advance to the next `todo` REQ.
-   - If status is `blocked`, trigger Decision Gate output.
-   - If status is `todo` or `in_progress`, continue.
+   - If status is `blocked`, trigger Decision Gate output and stop.
+   - If status is `todo` or `in_progress`, check blocking logic first; if not blocked, generate a microstep plan before any other action.
 
 3. Blocking logic:
    - If the active REQ has `depends_on` containing any open Q-ID:
@@ -42,7 +42,16 @@ You may NOT:
      - Generate a Decision Gate entry in spec/decisions.md using the template
      - Ask the user to choose among 2–4 options (minimal viable choice to proceed)
 
-4. Advancement logic:
+4. Microstep planning logic (required for unblocked `todo` / `in_progress` REQs):
+   - Produce a plan of 5–12 microsteps.
+   - Each microstep must include:
+     - Intent (what the step accomplishes)
+     - Likely files touched
+     - Verification command (explicit command string, e.g., `./.venv/bin/python -m pytest -q`)
+   - Microsteps must be architecture-safe and must not cross HARD boundaries.
+   - Do not implement code while producing the plan.
+
+5. Advancement logic:
    - Only advance REQs after verification passes (per REQ verification list).
    - Update spec/requirements.yml status accordingly.
 
