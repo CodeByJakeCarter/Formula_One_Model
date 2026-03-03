@@ -7,7 +7,7 @@ from f1model.services.driver_service import DriverService
 driver_router = APIRouter(prefix="/drivers", tags=["drivers"])
 
 @driver_router.post("/", response_model=DriverRead, status_code=201)
-def create_driver(
+async def create_driver(
     data: DriverCreate,
     session: Session = Depends(get_db)
 ):
@@ -16,7 +16,7 @@ def create_driver(
     return driver
 
 @driver_router.get("/{driver_id}", response_model=DriverRead)
-def get_driver(
+async def get_driver(
     driver_id: int,
     session: Session = Depends(get_db)
 ):
@@ -27,7 +27,7 @@ def get_driver(
     return driver
 
 @driver_router.get("/", response_model=list[DriverRead])
-def list_drivers(
+async def list_drivers(
     limit: int = 100,
     offset: int = 0,
     session: Session = Depends(get_db)
