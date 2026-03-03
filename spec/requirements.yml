@@ -9,8 +9,8 @@ meta:
 open_questions:
 - id: Q-001
   question: What is the official data source?
-  status: open
-  notes: ''
+  status: resolved
+  notes: Canonical source set to Jolpica API (see DEC-2026-03-03-001, ADR 0002).
 - id: Q-002
   question: Exact output granularity?
   status: open
@@ -29,7 +29,7 @@ requirements:
   rigidity: HARD
   depends_on:
   - Q-001
-  status: blocked
+  status: todo
   statement: System ingests structured historical F1 race data.
   acceptance:
   - At least one full season can be loaded and queried.
@@ -45,7 +45,7 @@ requirements:
     api_surface: false
     docs_update: true
     adr_required: true
-  notes: Blocked pending Q-001 decision on official data source (see DEC-2026-03-03-001).
+  notes: Unblocked after Q-001 resolution; canonical source is Jolpica API (DEC-2026-03-03-001, ADR 0002).
 - id: REQ-002
   title: Race-Level Probabilistic Prediction
   rigidity:

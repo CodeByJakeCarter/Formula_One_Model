@@ -32,7 +32,7 @@ Keep entries short, specific, and link them to REQ/Q IDs.
 
 ## Entries
 
-### DEC-2026-03-03-001: Official Data Source Selection Pending
+### DEC-2026-03-03-001: Official Data Source Selection
 - Date: 2026-03-03
 - Related: REQ-001, Q-001
 - Type: HARD
@@ -41,10 +41,10 @@ Keep entries short, specific, and link them to REQ/Q IDs.
   1) Ergast/Jolpica API lineage as canonical source.
   2) FastF1-derived datasets as canonical source.
   3) Maintained static dataset snapshot in-repo as canonical source.
-- Decision: Pending user decision on Q-001.
-- Rationale: No source has been formally selected yet; implementing ingestion before this choice would violate task-engine dependency rules.
+- Decision: Use Jolpica API (Ergast-compatible) as the canonical source.
+- Rationale: Jolpica satisfies the required historical F1 reference dataset shape and is already accepted in ADR 0002, allowing REQ-001 to proceed with a consistent source of truth.
 - Consequences:
-  - REQ-001 remains blocked.
-  - Implementation and verification are deferred until Q-001 is resolved.
-- Verification: Q-001 status changes from `open` to resolved and chosen source is recorded.
-- Notes: If chosen source changes API contract or reproducibility guarantees, promote to ADR per repository policy.
+  - REQ-001 is unblocked.
+  - Ingestion implementation proceeds against Jolpica as canonical provider.
+- Verification: Q-001 status is set to resolved in `spec/requirements.yml` and ADR 0002 remains consistent with this decision.
+- Notes: ADR reference: `docs/adr/0002-jolpica-canonical-reference-source.md`.

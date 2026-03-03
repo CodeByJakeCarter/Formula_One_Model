@@ -13,7 +13,7 @@ Implement REQ-001 per `spec/requirements.yml`.
 - Deterministic reload produces identical dataset state (given the same source + seed/config).
 
 ## Decision Gate
-This task is **blocked** until Q-001 is resolved:
-- Q-001: What is the official data source?
-
-Record the decision in `spec/decisions.md` (and ADR if required).
+Q-001 has been resolved:
+- Official data source: Jolpica API
+- Decision reference: `DEC-2026-03-03-001`
+- ADR reference: `docs/adr/0002-jolpica-canonical-reference-source.md`
