@@ -65,3 +65,20 @@ Keep entries short, specific, and link them to REQ/Q IDs.
   - Reload determinism is checked against identical post-run dataset state.
 - Verification: Re-running ingestion for season 2025 with fixed source data and fixed ingestion config yields identical persisted dataset state.
 - Notes: Ingestion is non-random for this milestone (no seed requirement). Canonical source remains Jolpica API; URL pinning deferred.
+
+### DEC-2026-03-03-003: REQ-001 Ingestion Boundary Placement
+- Date: 2026-03-03
+- Related: REQ-001
+- Type: HARD
+- Context: REQ-001 needs an explicit implementation boundary so ingestion logic is isolated from API endpoints and remains provider-swappable.
+- Options considered:
+  1) Put ingestion orchestration in service layer with DB writes through repository layer.
+  2) Put ingestion logic directly in API route handlers.
+  3) Put ingestion logic only in ad-hoc scripts without service boundary.
+- Decision: Use service-layer orchestration for ingest/transform flow, with persistence operations in repository layer; API routes remain consumers only.
+- Rationale: This preserves separation of concerns and keeps future provider replacement isolated to ingestion-facing service/repository components.
+- Consequences:
+  - Ingestion code lives in `src/f1model/services/*` and `src/f1model/repositories/*`.
+  - API route files under `src/f1model/api/*` are not the ingestion orchestration layer.
+- Verification: New ingestion behavior is exercised through tests while API route structure remains unchanged for orchestration concerns.
+- Notes: This decision defines placement only; no endpoint contract changes are introduced by this decision.

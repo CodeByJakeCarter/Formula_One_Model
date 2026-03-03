@@ -45,7 +45,7 @@ requirements:
     api_surface: false
     docs_update: true
     adr_required: true
-  notes: 'Unblocked after Q-001 resolution; canonical source is Jolpica API (DEC-2026-03-03-001, ADR 0002). Milestone scope is full 2025 season coverage. Ingestion must be idempotent on rerun (no duplicates). Deterministic reload is defined as identical post-run dataset state from fixed source data + fixed ingestion config; ingestion is non-random (no seed required). URL pinning deferred.'
+  notes: 'Unblocked after Q-001 resolution; canonical source is Jolpica API (DEC-2026-03-03-001, ADR 0002). Milestone scope is full 2025 season coverage. Ingestion must be idempotent on rerun (no duplicates). Deterministic reload is defined as identical post-run dataset state from fixed source data + fixed ingestion config; ingestion is non-random (no seed required). URL pinning deferred. Ingestion boundary placement is fixed by DEC-2026-03-03-003 (service orchestration + repository persistence; API routes not orchestration layer).'
 - id: REQ-002
   title: Race-Level Probabilistic Prediction
   rigidity:

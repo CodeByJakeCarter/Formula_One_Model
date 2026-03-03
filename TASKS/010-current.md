@@ -23,3 +23,9 @@ REQ-001 milestone definition has been fixed:
 - Reload behavior: idempotent rerun (no duplicates)
 - Determinism: non-random ingestion; identical post-run dataset state with fixed source data + fixed config
 - Decision reference: `DEC-2026-03-03-002`
+
+Ingestion boundary placement has been fixed:
+- Orchestration layer: `src/f1model/services/*`
+- Persistence layer: `src/f1model/repositories/*`
+- API route handlers are not ingestion orchestration
+- Decision reference: `DEC-2026-03-03-003`
